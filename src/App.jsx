@@ -1,13 +1,19 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import './App.css'
 import Tasks  from './components/Tasks'
 import Input from './components/Input'
 
 function App() {
 
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks')
+    return savedTasks ? JSON.parse(savedTasks) : []
+  })
   // useRef pour générer des IDs uniques pour les tâches, même après des suppressions
-  const nextTaskId = useRef(1)
+  const nextTaskId = useRef(() => {
+    const savedId = localStorage.getItem('nextTaskId')
+    return savedId ? parseInt(savedId, 10) : 1
+  })
 
   // ajoute une nouvelle tâche à la liste des tâches
   const addTask = (title, author, tagsText) => {
@@ -55,7 +61,11 @@ function App() {
     )
   }
 
-  
+  // Sauvegarder les tâches dans localStorage à chaque modification
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+    localStorage.setItem('nextTaskId', nextTaskId.current.toString())
+  }, [tasks])
 
   return (
     <>
