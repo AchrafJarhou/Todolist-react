@@ -1,11 +1,11 @@
 import React from 'react'
 import Task from './Task'
 
-const Tasks = ({ tasks, setTasks }) => {
+const Tasks = ({ tasks, deleteTask, toggleTaskCompletion, updateTask }) => {
   return (
     <div>
-      {tasks.map((task, index) => (
-        <Task key={index} task={task} index={index} setTasks={setTasks} />
+      {tasks.map((task) => (
+        <Task key={task.id} task={task} deleteTask={deleteTask} toggleTaskCompletion={toggleTaskCompletion} updateTask={updateTask} />
       ))}
     </div>
   )
